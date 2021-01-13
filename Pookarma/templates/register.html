@@ -40,11 +40,10 @@
                     {% else %}
                         {{ form.confirm_password(class="form-control form-control-lg") }}
                     {% endif %}
+
+                    <p>                      </p>
                 {{ form.submit(class="btn btn-outline-info") }}
         </form>
-    </div>
-        <small >
-            Already Have An Account? <a class="ml-2" href="{{ url_for('login') }}">Sign In</a>
-        </small>
-    </div>
+        <p>                                                 </p>
+        <p> Already Have An Account?<a class="ml-2" href="{{ url_for('login') }}">Sign</a></p>
 {% endblock content %}
