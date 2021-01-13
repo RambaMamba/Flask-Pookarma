@@ -28,7 +28,7 @@ multidict==4.7.6
 pycparser==2.20
 pygame==1.9.6
 pyowm==2.8.0
-requests==2.25.1
+requests==2.18.2
 selenium==3.141.0
 six==1.15.0
 soupsieve==2.1
