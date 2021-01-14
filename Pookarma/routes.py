@@ -4,10 +4,16 @@ from Pookarma.forms import RegistrationForm, LoginForm
 from Pookarma import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
 
+
+
+
+
+posts1 = ["Post at 7:19 Jan 13 by user ShreyBirmiwal: DooDooKarma has released!", "Post at 7:10 Jan 13 by user ShreyBirmiwal: Picking up poo at balcones!", "Post at 7:19 Jan 13 by user ShreyBirmiwal: Dog Meetup in austin anyone?"]
+
 @app.route("/")
 @app.route("/feed")
 def feed():
-    return render_template('feed.html')
+    return render_template('feed.html', posts = posts1)
 
 
 @app.route("/about")
