@@ -1,17 +1,20 @@
 from Pookarma.models import User, Post
 from flask import render_template, url_for, flash, redirect, request
-from Pookarma.forms import RegistrationForm, LoginForm,UpdateAccountForm
+from Pookarma.forms import RegistrationForm, LoginForm,UpdateAccountForm, PostForm
 from Pookarma import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
+from flask_wtf.file import FileField
+from werkzeug.utils import secure_filename
+import os
+import urllib.request
 
 
-
-posts1 = ["Post at 7:19 Jan 13 by user ShreyBirmiwal: DooDooKarma has released!", "Post at 7:10 Jan 13 by user ShreyBirmiwal: Picking up poo at balcones!", "Post at 7:19 Jan 13 by user ShreyBirmiwal: Dog Meetup in austin anyone?"]
 
 @app.route("/")
 @app.route("/feed")
 def feed():
-    return render_template('feed.html', posts = posts1)
+    posts = Post.query.all()
+    return render_template('feed.html', posts = posts)
 
 
 @app.route("/about")
@@ -71,3 +74,15 @@ def account():
         form.email.data = current_user.email
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('account.html', title='Account', image_file = image_file, form = form)
+
+@app.route("/post/new", methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title = form.title.data, author = current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('feed'))
+    return render_template('create_post.html', title='New Post', form = form)
