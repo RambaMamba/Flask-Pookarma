@@ -9,19 +9,19 @@ import os
 import urllib.request
 
 
-
+@app.route("/post/feed")
 @app.route("/")
 @app.route("/feed")
 def feed():
     posts = Post.query.all()
     return render_template('feed.html', posts = posts)
 
-
+@app.route('/post/about', methods=['GET', 'POST'])
 @app.route("/about")
 def about():
     return render_template('about.html', title='About')
 
-
+@app.route('/post/register', methods=['GET', 'POST'])
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -29,7 +29,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username = form.username.data, email = form.email.data, password= hashed_password)
+        user = User(username = form.username.data, email = form.email.data, password= hashed_password, karma = 0)
         db.session.add(user)
         db.session.commit()
 
@@ -37,7 +37,7 @@ def register():
         return redirect(url_for('feed'))
     return render_template('register.html', title='Register', form=form)
 
-
+@app.route('/post/login', methods=['GET', 'POST'])
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -54,12 +54,15 @@ def login():
     return render_template('login.html', title='Login', form=form)
 
 @app.route("/logout")
+@app.route('/post/logout')
+
 def logout():
     logout_user()
     flash('Logout success!')
     return redirect(url_for('feed'))
 
 @app.route("/account", methods=['GET', 'POST'])
+@app.route('/post/account', methods=['GET', 'POST'])
 @login_required
 def account():
     form = UpdateAccountForm()
@@ -78,11 +81,15 @@ def account():
 @app.route("/post/new", methods=['GET', 'POST'])
 @login_required
 def new_post():
+    print("function started")
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title = form.title.data, author = current_user)
         db.session.add(post)
+        current_user.karma += 1
         db.session.commit()
+        str123 = "You now have " + str(current_user.karma) +" karma points!"
+        flash(str123, 'success')
         flash('Your post has been created!', 'success')
         return redirect(url_for('feed'))
     return render_template('create_post.html', title='New Post', form = form)

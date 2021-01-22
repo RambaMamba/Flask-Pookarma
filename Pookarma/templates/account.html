@@ -14,6 +14,7 @@
   <div class="content-section">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
+
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Account Info</legend>
                 <div class="form-group">
@@ -49,6 +50,8 @@
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
+            <h1> Karma points: {{ current_user.karma }} </h1>
+
         </form>
     </div>
   <!-- FORM HERE -->
