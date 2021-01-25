@@ -1,0 +1,12 @@
+{% extends "layout.html" %} 
+{% block title %} Leaderboard {% endblock %}
+{% block content %}
+
+{% for topUser in topUsers %}
+	 <p> {{topUser.username }} {{topUser.karma}} </p>   
+   
+
+ 
+{% endfor %}
+
+ {% endblock %} 

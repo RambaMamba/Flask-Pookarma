@@ -9,12 +9,29 @@ import os
 import urllib.request
 
 
+
 @app.route("/post/feed")
 @app.route("/")
 @app.route("/feed")
 def feed():
     posts = Post.query.all()
     return render_template('feed.html', posts = posts)
+
+@app.route("/post/leaderboard")
+@app.route("/leaderboard")
+def leaderboard():
+    users = User.query.all()
+    userDict = {}
+    for user in users:
+        userDict[user.username] = user.karma
+    sort = sorted(userDict.items(), key=lambda x: x[1], reverse=True)
+    
+    finalLeader = []
+    for people in sort:
+        finalLeader.append(User.query.filter_by(username = people[0]).first())
+    
+
+    return render_template('leaderboard.html', topUsers = finalLeader)
 
 @app.route('/post/about', methods=['GET', 'POST'])
 @app.route("/about")

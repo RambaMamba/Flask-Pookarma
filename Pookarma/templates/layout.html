@@ -29,6 +29,10 @@
       <li class="nav-item active">
         <a class="nav-link" href="feed"aria-current="page">Feed </a>
       </li>
+    <li class="nav-item">
+        <a class="nav-link" href="leaderboard" aria-current="page">Leaderboard </a>
+
+      </li>   
       {% if current_user.is_authenticated %}
       </li>
         <li class="nav-item">
@@ -43,7 +47,7 @@
 
 
         {% else %}
-
+   
           <li class="nav-item">
         <a class="nav-link" href="login" aria-current="page">Paw In </a>
 
